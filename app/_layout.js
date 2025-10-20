@@ -3,6 +3,20 @@ import { View } from "react-native";
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+const getDayTitle = () => {
+  const days = [
+    "Domingo",
+    "Lunes",
+    "Martes",
+    "Miercoles",
+    "Jueves",
+    "Viernes",
+    "Sabado",
+  ];
+  const today = new Date().getDay();
+  return days[today];
+};
+
 export default function Layout() {
   return (
     <SafeAreaProvider>
@@ -15,7 +29,7 @@ export default function Layout() {
             headerTitleStyle: {
               color: "#000",
             },
-            headerTitle: "Reps",
+            headerTitle: getDayTitle(),
           }}
         />
       </View>
