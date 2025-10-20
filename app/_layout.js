@@ -24,7 +24,7 @@ export default function Layout() {
       databaseName="reps.db"
       onInit={async (db) => {
         await db.execAsync(
-          "CREATE TABLE IF NOT EXISTS exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, category TEXT NOT NULL, sets INTEGER, reps INTEGER, weight INTEGER, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+          "CREATE TABLE IF NOT EXISTS exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, category TEXT NOT NULL, sets INTEGER, reps INTEGER, weight INTEGER,day TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
         );
       }}
       options={{ useNewConnection: false }}
