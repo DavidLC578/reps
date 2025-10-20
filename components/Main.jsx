@@ -26,7 +26,6 @@ export default function Main() {
       "SELECT * FROM exercises WHERE day = ?",
       [getActualDay()]
     );
-    console.log(exercises);
     setExercises(exercises);
   };
   useEffect(() => {
