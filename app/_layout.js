@@ -1,4 +1,5 @@
 import { Slot, Stack } from "expo-router";
+import { SQLiteProvider } from "expo-sqlite";
 import { View } from "react-native";
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -19,21 +20,31 @@ const getDayTitle = () => {
 
 export default function Layout() {
   return (
-    <SafeAreaProvider>
-      <View style={styles.container}>
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#fff",
-            },
-            headerTitleStyle: {
-              color: "#000",
-            },
-            headerTitle: getDayTitle(),
-          }}
-        />
-      </View>
-    </SafeAreaProvider>
+    <SQLiteProvider
+      databaseName="reps.db"
+      onInit={async (db) => {
+        await db.execAsync(
+          "CREATE TABLE IF NOT EXISTS exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, category TEXT NOT NULL, sets INTEGER, reps INTEGER, weight INTEGER, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+        );
+      }}
+      options={{ useNewConnection: false }}
+    >
+      <SafeAreaProvider>
+        <View style={styles.container}>
+          <Stack
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#fff",
+              },
+              headerTitleStyle: {
+                color: "#000",
+              },
+              headerTitle: getDayTitle(),
+            }}
+          />
+        </View>
+      </SafeAreaProvider>
+    </SQLiteProvider>
   );
 }
 
