@@ -1,9 +1,38 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import { Check } from "./Icons";
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
+import { Check, Trash } from "./Icons";
 import { useState } from "react";
+import { useSQLiteContext } from "expo-sqlite";
 
-export default function ExerciseCard({ exercise, index }) {
+export default function ExerciseCard({ exercise, index, onExerciseDeleted }) {
   const [checked, setChecked] = useState(false);
+  const db = useSQLiteContext();
+
+  const deleteExercise = (id) => {
+    Alert.alert(
+      "Eliminar ejercicio",
+      "¿Estás seguro de que quieres eliminar este ejercicio?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        { 
+          text: "Eliminar", 
+          onPress: async () => {
+            try {
+              await db.runAsync("DELETE FROM exercises WHERE id = ?", [id]);
+              Alert.alert("Éxito", "Ejercicio eliminado");
+              if (onExerciseDeleted) onExerciseDeleted();
+            } catch (error) {
+              console.error(error);
+              Alert.alert("Error", error.message);
+            }
+          } 
+        }
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -15,13 +44,16 @@ export default function ExerciseCard({ exercise, index }) {
           {exercise.weight && <Text>{exercise.weight} kg</Text>}
         </View>
       </View>
-      <View style={styles.checkContainer}>
+      <View style={styles.actions}>
         <Pressable onPress={() => setChecked(!checked)}>
           {checked ? (
             <Check style={styles.isChecked} />
           ) : (
             <Check style={styles.check} />
           )}
+        </Pressable>
+        <Pressable onPress={() => deleteExercise(exercise.id)}>
+          <Trash style={styles.trash} />
         </Pressable>
       </View>
     </View>
@@ -56,7 +88,10 @@ const styles = StyleSheet.create({
     gap: 10,
     marginTop: 6,
   },
-  checkContainer: {
+  actions: {
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 10,
     position: "absolute",
     right: 15,
     top: 15,
@@ -74,5 +109,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "#607afb",
     padding: 5,
+  },
+  trash: {
+    marginTop: 8,
   },
 });

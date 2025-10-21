@@ -43,7 +43,11 @@ export default function Main() {
         data={exercises}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) => (
-          <ExerciseCard exercise={item} index={index} />
+          <ExerciseCard 
+            exercise={item} 
+            index={index} 
+            onExerciseDeleted={loadExercises}
+          />
         )}
         ListEmptyComponent={() => <Text>No hay ejercicios</Text>}
       />

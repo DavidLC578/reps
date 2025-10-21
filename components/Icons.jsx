@@ -17,3 +17,7 @@ export const Home = (props) => (
 export const BarChart2 = (props) => (
   <Feather name="bar-chart-2" size={24} color="black" {...props} />
 );
+
+export const Trash = (props) => (
+  <Feather name="trash-2" size={24} color="red" {...props} />
+);
