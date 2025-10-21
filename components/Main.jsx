@@ -1,7 +1,7 @@
 import { useSQLiteContext } from "expo-sqlite";
 import { View, StyleSheet, Text, FlatList } from "react-native";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useFocusEffect } from "expo-router";
 import ExerciseCard from "./ExerciseCard";
 
 const getActualDay = () => {
@@ -31,6 +31,12 @@ export default function Main() {
   useEffect(() => {
     loadExercises();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadExercises();
+    }, [])
+  );
   return (
     <View style={styles.container}>
       <FlatList

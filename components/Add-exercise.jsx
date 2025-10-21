@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
 
 const daysOfWeek = [
   "Lunes",
@@ -20,9 +21,11 @@ const daysOfWeek = [
 ];
 
 export default function AddExercise() {
+  const db = useSQLiteContext();
   const router = useRouter();
   const [form, setForm] = useState({
     name: "",
+    category: "",
     sets: "",
     reps: "",
     weight: "",
@@ -33,8 +36,23 @@ export default function AddExercise() {
     setForm({ ...form, [field]: value });
   };
 
-  const saveExercise = () => {
-    console.log(form);
+  const saveExercise = async () => {
+    try {
+      if (form.name == "" || form.category == "" || form.day == "") {
+        throw new Error(
+          "Introduce al menos el nombre, la categoría y el día del ejercicio"
+        );
+      }
+      await db.runAsync(
+        "INSERT INTO exercises (name, category, sets, reps, weight, day) VALUES (?, ?, ?, ?, ?, ?)",
+        [form.name, form.category, form.sets, form.reps, form.weight, form.day]
+      );
+      alert("Ejercicio guardado");
+      router.back();
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
   };
 
   return (
@@ -54,7 +72,16 @@ export default function AddExercise() {
               placeholderTextColor="#999"
             />
           </View>
-
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Categoría</Text>
+            <TextInput
+              placeholder="Ej: Pecho"
+              value={form.category}
+              onChangeText={(text) => handleChange("category", text)}
+              style={styles.input}
+              placeholderTextColor="#999"
+            />
+          </View>
           <View style={styles.row}>
             <View style={[styles.inputGroup, { flex: 1, marginRight: 10 }]}>
               <Text style={styles.label}>Series</Text>
