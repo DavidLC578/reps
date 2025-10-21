@@ -20,6 +20,17 @@ const daysOfWeek = [
   "Domingo",
 ];
 
+const categories = [
+  "Pecho",
+  "Biceps",
+  "Triceps",
+  "Antebrazo",
+  "Hombros",
+  "Espalda",
+  "Abdomen",
+  "Pierna",
+];
+
 export default function AddExercise() {
   const db = useSQLiteContext();
   const router = useRouter();
@@ -74,13 +85,28 @@ export default function AddExercise() {
           </View>
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Categoría</Text>
-            <TextInput
-              placeholder="Ej: Pecho"
-              value={form.category}
-              onChangeText={(text) => handleChange("category", text)}
-              style={styles.input}
-              placeholderTextColor="#999"
-            />
+            <View style={styles.categoriesContainer}>
+              {categories.map((category) => (
+                <Pressable
+                  key={category}
+                  style={[
+                    styles.categoryButton,
+                    form.category === category && styles.categoryButtonSelected,
+                  ]}
+                  onPress={() => handleChange("category", category)}
+                >
+                  <Text
+                    style={[
+                      styles.categoryButtonText,
+                      form.category === category &&
+                        styles.categoryButtonTextSelected,
+                    ]}
+                  >
+                    {category}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
           </View>
           <View style={styles.row}>
             <View style={[styles.inputGroup, { flex: 1, marginRight: 10 }]}>
@@ -211,6 +237,35 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  categoriesContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    gap: 10,
+    marginTop: 8,
+  },
+  categoryButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+    backgroundColor: "#f5f5f5",
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+  categoryButtonSelected: {
+    backgroundColor: "#007AFF",
+    borderColor: "#007AFF",
+  },
+  categoryButtonText: {
+    fontSize: 14,
+    color: "#666",
+    fontWeight: "500",
+  },
+  categoryButtonTextSelected: {
+    color: "#fff",
+    fontWeight: "600",
   },
   daySelectorContainer: {
     marginBottom: 20,
