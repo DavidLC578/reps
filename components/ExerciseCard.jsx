@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import { Check, Trash } from "./Icons";
 import { useState } from "react";
 import { useSQLiteContext } from "expo-sqlite";
+import { Link } from "expo-router";
 
 export default function ExerciseCard({ exercise, index, onExerciseDeleted }) {
   const [checked, setChecked] = useState(false);
@@ -14,10 +15,10 @@ export default function ExerciseCard({ exercise, index, onExerciseDeleted }) {
       [
         {
           text: "Cancelar",
-          style: "cancel"
+          style: "cancel",
         },
-        { 
-          text: "Eliminar", 
+        {
+          text: "Eliminar",
           onPress: async () => {
             try {
               await db.runAsync("DELETE FROM exercises WHERE id = ?", [id]);
@@ -27,23 +28,25 @@ export default function ExerciseCard({ exercise, index, onExerciseDeleted }) {
               console.error(error);
               Alert.alert("Error", error.message);
             }
-          } 
-        }
+          },
+        },
       ]
     );
   };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.exerciseNumber}>Ejercicio {index + 1}</Text>
-        <Text style={styles.exerciseName}>{exercise.name}</Text>
-        <View style={styles.details}>
-          <Text>{exercise.sets} series</Text>
-          <Text>{exercise.reps} repeticiones</Text>
-          {exercise.weight && <Text>{exercise.weight} kg</Text>}
+      <Link href={`/exercise/${exercise.id}`}>
+        <View>
+          <Text style={styles.exerciseNumber}>Ejercicio {index + 1}</Text>
+          <Text style={styles.exerciseName}>{exercise.name}</Text>
+          <View style={styles.details}>
+            <Text>{exercise.sets} series</Text>
+            <Text>{exercise.reps} repeticiones</Text>
+            {exercise.weight && <Text>{exercise.weight} kg</Text>}
+          </View>
         </View>
-      </View>
+      </Link>
       <View style={styles.actions}>
         <Pressable onPress={() => setChecked(!checked)}>
           {checked ? (
