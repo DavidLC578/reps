@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 import { Link } from "expo-router";
 
-export default function ExerciseCard({ exercise, index, onExerciseDeleted }) {
+export default function ExerciseCard({
+  exercise,
+  index,
+  onExerciseDeleted,
+  isTicked = true,
+}) {
   const [checked, setChecked] = useState(false);
   const db = useSQLiteContext();
 
@@ -38,7 +43,11 @@ export default function ExerciseCard({ exercise, index, onExerciseDeleted }) {
     <View style={styles.container}>
       <Link href={`/exercise/${exercise.id}`}>
         <View>
-          <Text style={styles.exerciseNumber}>Ejercicio {index + 1}</Text>
+          {isTicked ? (
+            <Text style={styles.exerciseNumber}>Ejercicio {index + 1}</Text>
+          ) : (
+            <Text style={styles.exerciseNumber}>{exercise.category}</Text>
+          )}
           <Text style={styles.exerciseName}>{exercise.name}</Text>
           <View style={styles.details}>
             <Text>{exercise.sets} series</Text>
@@ -47,14 +56,16 @@ export default function ExerciseCard({ exercise, index, onExerciseDeleted }) {
           </View>
         </View>
       </Link>
-      <View style={styles.actions}>
-        <Pressable onPress={() => setChecked(!checked)}>
-          {checked ? (
-            <Check style={styles.isChecked} />
-          ) : (
-            <Check style={styles.check} />
-          )}
-        </Pressable>
+      <View style={[styles.actions, { top: isTicked ? 15 : 60 }]}>
+        {isTicked && (
+          <Pressable onPress={() => setChecked(!checked)}>
+            {checked ? (
+              <Check style={styles.isChecked} />
+            ) : (
+              <Check style={styles.check} />
+            )}
+          </Pressable>
+        )}
         <Pressable onPress={() => deleteExercise(exercise.id)}>
           <Trash style={styles.trash} />
         </Pressable>
@@ -97,7 +108,6 @@ const styles = StyleSheet.create({
     gap: 10,
     position: "absolute",
     right: 15,
-    top: 15,
   },
   check: {
     borderWidth: 2,

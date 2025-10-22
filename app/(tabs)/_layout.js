@@ -31,11 +31,6 @@ export default function TabsLayout() {
             color: "#000",
           },
           headerTitle: getDayTitle(),
-          headerRight: () => (
-            <Link href="/add-exercise" style={{ marginRight: 15 }}>
-              <Plus />
-            </Link>
-          ),
         }}
       >
         <Tabs.Screen
@@ -43,6 +38,11 @@ export default function TabsLayout() {
           options={{
             title: "Inicio",
             tabBarIcon: ({ color }) => <Home color={color} />,
+            headerRight: () => (
+              <Link href="/add-exercise" style={{ marginRight: 15 }}>
+                <Plus />
+              </Link>
+            ),
           }}
         />
         <Tabs.Screen
@@ -50,6 +50,17 @@ export default function TabsLayout() {
           options={{
             title: "Progreso",
             tabBarIcon: ({ color }) => <BarChart2 color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="exercises"
+          options={{
+            title: "Ejercicios",
+            tabBarIcon: ({ color }) => <BarChart2 color={color} />,
+            headerTitle: "Mis Ejercicios",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
           }}
         />
       </Tabs>
