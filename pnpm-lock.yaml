@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@react-native-picker/picker':
+        specifier: ^2.11.4
+        version: 2.11.4(react-native@0.81.4(@babel/core@7.28.4)(react@19.1.0))(react@19.1.0)
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.38.0)
@@ -1066,6 +1069,12 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  '@react-native-picker/picker@2.11.4':
+    resolution: {integrity: sha512-Kf8h1AMnBo54b1fdiVylP2P/iFcZqzpMYcglC28EEFB1DEnOjsNr6Ucqc+3R9e91vHxEDnhZFbYDmAe79P2gjA==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   '@react-native/assets-registry@0.81.4':
     resolution: {integrity: sha512-AMcDadefBIjD10BRqkWw+W/VdvXEomR6aEZ0fhQRAv7igrBzb4PTn4vHKYg+sUK0e3wa74kcMy2DLc/HtnGcMA==}
@@ -5446,6 +5455,11 @@ snapshots:
   '@radix-ui/react-use-layout-effect@1.1.1(react@19.1.0)':
     dependencies:
       react: 19.1.0
+
+  '@react-native-picker/picker@2.11.4(react-native@0.81.4(@babel/core@7.28.4)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+      react-native: 0.81.4(@babel/core@7.28.4)(react@19.1.0)
 
   '@react-native/assets-registry@0.81.4': {}
 
