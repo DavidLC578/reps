@@ -1,12 +1,15 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Group, Reps, Set, Weight } from "./Icons";
 import { Link } from "expo-router";
+import { useFocusEffect } from "expo-router";
 
 export default function ExerciseInfo({ id }) {
   const [exercise, setExercise] = useState();
+
   const db = useSQLiteContext();
+
   const loadExercise = async () => {
     const exercise = await db.getFirstSync(
       "SELECT * FROM exercises WHERE id = ?",
@@ -14,9 +17,17 @@ export default function ExerciseInfo({ id }) {
     );
     setExercise(exercise);
   };
+
   useEffect(() => {
     loadExercise();
   }, [id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadExercise();
+    }, [id])
+  );
+
   return (
     <View style={styles.container}>
       {/* Título */}
