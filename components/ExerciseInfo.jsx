@@ -2,12 +2,12 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState, useEffect, useCallback } from "react";
 import { Group, Reps, Set, Weight } from "./Icons";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useFocusEffect } from "expo-router";
 
 export default function ExerciseInfo({ id }) {
   const [exercise, setExercise] = useState();
-
+  const router = useRouter();
   const db = useSQLiteContext();
 
   const loadExercise = async () => {
@@ -75,15 +75,14 @@ export default function ExerciseInfo({ id }) {
 
         {/* Botón de Editar */}
         <View style={styles.buttonContainer}>
-          <Pressable
+          <Pressable 
             style={({ pressed }) => [
               styles.button,
-              pressed && styles.buttonPressed,
+              pressed && styles.buttonPressed
             ]}
+            onPress={() => router.push(`/exercise/edit/${exercise?.id}`)}
           >
-            <Link href={`/exercise/edit/${exercise?.id}`} asChild>
-              <Text style={styles.buttonText}>Editar Ejercicio</Text>
-            </Link>
+            <Text style={styles.buttonText}>Editar Ejercicio</Text>
           </Pressable>
         </View>
       </View>
@@ -128,25 +127,29 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 12,
     overflow: "hidden",
+    width: "100%",
   },
 
   button: {
     backgroundColor: "#353535",
-    padding: 20,
+    padding: 15,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 12,
+    width: "100%",
+    minHeight: 60,
   },
 
   buttonPressed: {
-    opacity: 0.9,
+    opacity: 0.8,
+    backgroundColor: "#454545",
   },
 
   buttonText: {
-    fontSize: 20,
-    textAlign: "center",
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#fff",
+    color: "white",
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 16,
